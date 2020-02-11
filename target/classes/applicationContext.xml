@@ -4,24 +4,53 @@
 	xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-4.2.xsd
 		http://www.springframework.org/schema/aop
-		http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+		http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 		
 
 
 	<context:component-scan base-package="com.springbook.biz"></context:component-scan>
-	<bean id="log" class="com.springbook.biz.common.LogAdvice"></bean>
+	
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	<!-- DataSource 설정 -->
+	<context:property-placeholder location="./config/database.properties"/>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}"/>
+		<property name="url" value="${jdbc.url}"/>
+		<property name="username" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+	</bean>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 
+	<bean id="beforeLogAdvice" class="com.springbook.biz.common.BeforeLogAdvice"></bean>
+	<bean id="afterReturningLogAdvice" class="com.springbook.biz.common.AfterReturningLogAdvice"></bean>
+	<bean id="afterThrowingAdvice" class="com.springbook.biz.common.AfterThrowingAdvice"></bean>
 	
 	<aop:config>
 		<aop:pointcut id="allPointcut" expression="execution(* com.springbook.biz..*Impl.*(..))"/>
 		<aop:pointcut id="getPointcut" expression="execution(* com.springbook.biz..*Impl.get*(..))"/>
-		<aop:aspect ref="log">
-			<aop:after pointcut-ref="getPointcut" method="printLog"/>
+		
+		<aop:aspect ref="afterReturningLogAdvice">
+			<aop:after-returning pointcut-ref="getPointcut" method="afterLog" returning="returnObj"/>
 		</aop:aspect>
+		 
+		 <aop:aspect ref="afterThrowingAdvice" >
+		 	<aop:after-throwing pointcut-ref="allPointcut" method="exceptionLog" throwing="exceptionObj"/>
+		 </aop:aspect>
+		
 	</aop:config>
+	 -->
 	<!--
 	<bean id="userService" class="com.springbook.biz.user.impl.UserServiceImpl">
 		<property name="userDAO" ref="userDAO"></property>

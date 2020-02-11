@@ -10,9 +10,10 @@ public class UserServiceClient {
 		UserService userService = (UserService) container.getBean("userService");
 		
 		UserVO vo = new UserVO();
-		vo.setId("testa");
+		vo.setId("test");
 		vo.setPassword("5678");
-		vo.setName("hihi");
+		vo.setName("haha");
+		vo.setRole("Admin");
 		UserVO user = userService.getUser(vo);
 		
 		if(user!=null) {

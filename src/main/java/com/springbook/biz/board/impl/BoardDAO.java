@@ -3,6 +3,7 @@ package com.springbook.biz.board.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class BoardDAO {
 	
 	//SQL 명령어들
 	private final String BOARD_INSERT = "insert into board(seq,title,writer,content)values"
-			+ "(6,?,?,?)";
+			+ "(11,?,?,?)";
 	private final String BOARD_UPDATE = "update board set title=?,content=? where seq=?";
 	private final String BOARD_DELETE = "delete board where seq=?";
 	private final String BOARD_GET = "select * from board where seq=?";
@@ -130,6 +131,16 @@ public class BoardDAO {
 			JDBCUtil.close(stmt, conn);
 		}
 		return boardList;
+	}
+	public BoardVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+		BoardVO board = new BoardVO();
+		board.setSeq(rs.getInt("SEQ"));
+		board.setTitle(rs.getString("TITLE"));
+		board.setWriter(rs.getString("WRITER"));
+		board.setContent(rs.getString("CONTENT"));
+		board.setRegDate(rs.getDate("REGDATE"));
+		board.setCnt(rs.getInt("CNT"));
+		return board;
 	}
 }
 
