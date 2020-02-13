@@ -11,7 +11,7 @@ public class UserServiceClient {
 		
 		UserVO vo = new UserVO();
 		vo.setId("test");
-		vo.setPassword("5678");
+		vo.setPassword("1234");
 		vo.setName("haha");
 		vo.setRole("Admin");
 		UserVO user = userService.getUser(vo);
