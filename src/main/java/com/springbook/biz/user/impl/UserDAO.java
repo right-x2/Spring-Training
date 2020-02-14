@@ -42,6 +42,6 @@ public class UserDAO {
 		}finally {
 			JDBCUtil.close(rs, stmt, conn);
 		}
-		return vo;
+		return user;
 	}
 }
