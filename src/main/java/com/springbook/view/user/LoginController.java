@@ -24,7 +24,7 @@ public class LoginController implements Controller{
 		vo.setPassword(password);
 		
 		UserDAO userDAO = new UserDAO();
-		UserVO user = UserDAO.getUser(vo);
+		UserVO user = userDAO.getUser(vo);
 		
 		if(user!=null) {
 			return "getBoardList.do";
